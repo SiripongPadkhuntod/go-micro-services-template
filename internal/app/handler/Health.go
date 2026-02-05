@@ -20,7 +20,7 @@ func (h *Handler) HealthHTTP(c *gin.Context) (any, error) {
 
 	return &dto.HealthResponse{
 		Status: dto.HealthStatusUp,
-		Service: "TEST",
+		Service: "NongKoon",
 		Version: "V.1",
 	}, nil
 }

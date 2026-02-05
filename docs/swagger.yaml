@@ -1,0 +1,32 @@
+basePath: /
+definitions:
+  dto.HealthResponse:
+    properties:
+      service:
+        type: string
+      status:
+        type: string
+      version:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Authentication microservice
+  title: Auth Service API
+  version: "1.0"
+paths:
+  /v1/health:
+    get:
+      description: Returns service status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.HealthResponse'
+      summary: Health Check
+      tags:
+      - Health
+swagger: "2.0"

@@ -22,26 +22,49 @@ Dexter Transport เป็นระบบจัดการขนส่งที
 
 ## 2.1 Clean Architecture
 
-แยก Layer ออกเป็น:
+Layer ถูกแยกออกอย่างชัดเจนดังนี้:
 
+- Handler (Interface)
 - Handler (Delivery Mechanism)
+- Service (Interface)
 - Service (Use Case / Business Logic)
 - Repository (Interface)
 - Repository Implementation (Postgres)
-- Domain (Core Business Model)
+- Adapter (Interface)
+- Adapter Implementation (Call External API)
 
-Dependency จะต้องไหลเข้าหา Domain เสมอ
+### Layer Explanation
 
-## 2.2 Hexagonal Architecture (Ports & Adapters)
+**Handler (Interface)**  
+กำหนด contract ของ HTTP layer ผ่าน port/handler.go
 
-- Port = Interface
-- Adapter = Implementation
+**Handler (Delivery Mechanism)**  
+Implementation ของ HTTP เช่น Gin handler ที่รับ request และส่ง response
 
-ทำให้สามารถเปลี่ยน implementation ได้โดยไม่กระทบ core business
+**Service (Interface)**  
+กำหนด Use Case contract ผ่าน port/service.go
+
+**Service (Use Case / Business Logic)**  
+Business logic หลักของระบบ เช่น การคำนวณยอด invoice, ตรวจสอบสถานะ delivery
+
+**Repository (Interface)**  
+กำหนด contract สำหรับ data access ผ่าน port/repository.go
+
+**Repository Implementation (Postgres)**  
+Implementation ที่เขียน SQL และ map entity ↔ domain
+
+**Adapter (Interface)**  
+กำหนด contract สำหรับ external integration ผ่าน port/adapter.go
+
+**Adapter Implementation (Call External API)**  
+Implementation ที่เรียก API ภายนอก หรือ cross-service call
+
+Dependency จะต้องไหลเข้าหา Business เสมอ (Dependency Inversion Principle)
 
 ---
 
 # 3. High Level Dependency Flow
+
 
 ```
 Handler → Service → Repository Interface
